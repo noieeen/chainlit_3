@@ -28,8 +28,6 @@ az account set --subscription $SUBSCRIPTION
 # # specify the node version your app requires
 # az webapp create --name $SITENAME --plan $PLANNAME --runtime $RUNTIME --resource-group $RESOURCEGROUP
 
-# Ensure Web App exists before config
-az webapp up --name $SITENAME --resource-group $RESOURCEGROUP --runtime $RUNTIME --plan $PLANNAME --logs
 
 # Startup command: run Chainlit, bind to 0.0.0.0:8000
 az webapp config set -g $RESOURCEGROUP -n $SITENAME \
@@ -50,6 +48,11 @@ az webapp config appsettings set -g $RESOURCEGROUP -n $SITENAME --settings \
   SUPABASE_URL="$SUPABASE_URL" \
   SCM_DO_BUILD_DURING_DEPLOYMENT=true \
   WEBSITES_PORT=8000
+
+
+# Ensure Web App exists before config
+az webapp up --name $SITENAME --resource-group $RESOURCEGROUP --runtime $RUNTIME --plan $PLANNAME --logs
+
 
 # To set up deployment from a local git repository, uncomment the following commands.
 # first, set the username and password (use environment variables!)
