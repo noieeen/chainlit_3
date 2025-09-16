@@ -22,6 +22,7 @@ def auth_callback(username: str, password: str):
     else:
         return None
 
+
 @cl.on_chat_resume
 async def on_chat_resume(thread):
     pass
@@ -32,8 +33,6 @@ async def tool():
     # Fake tool
     await cl.sleep(2)
     return "Response from the tool!"
-
-
 
 
 @cl.on_message  # this function will be called every time a user inputs a message in the UI
