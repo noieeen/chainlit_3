@@ -1,6 +1,6 @@
-    #!/bin/bash
+#!/bin/bash
 
-    # Load environment variables from .env if it exists
+# Load environment variables from .env if it exists
 if [ -f .env ]; then
   source .env
 fi
@@ -11,7 +11,7 @@ LOCATION="southeastasia"
 PLANNAME="ASP-DefaultResourceGroupSEA-a573"
 PLANSKU="F1"
 SITENAME="Chainlit"
-RUNTIME="PYTHON|3.13"
+RUNTIME="PYTHON|3.11"
 
 # login supports device login, username/password, and service principals
 # see https://docs.microsoft.com/en-us/cli/azure/?view=azure-cli-latest#az_login
@@ -28,6 +28,8 @@ az account set --subscription $SUBSCRIPTION
 # # specify the node version your app requires
 # az webapp create --name $SITENAME --plan $PLANNAME --runtime $RUNTIME --resource-group $RESOURCEGROUP
 
+# Ensure Web App exists before config
+az webapp up --name $SITENAME --resource-group $RESOURCEGROUP --runtime $RUNTIME --plan $PLANNAME --logs
 
 # Startup command: run Chainlit, bind to 0.0.0.0:8000
 az webapp config set -g $RESOURCEGROUP -n $SITENAME \
@@ -46,10 +48,8 @@ az webapp config appsettings set -g $RESOURCEGROUP -n $SITENAME --settings \
   APP_AWS_ACCESS_KEY="$APP_AWS_ACCESS_KEY" \
   APP_AWS_SECRET_KEY="$APP_AWS_SECRET_KEY" \
   SUPABASE_URL="$SUPABASE_URL" \
-  SCM_DO_BUILD_DURING_DEPLOYMENT=true
-
-
-az webapp up --name $SITENAME --resource-group $RESOURCEGROUP --runtime $RUNTIME --plan $PLANNAME --logs
+  SCM_DO_BUILD_DURING_DEPLOYMENT=true \
+  WEBSITES_PORT=8000
 
 # To set up deployment from a local git repository, uncomment the following commands.
 # first, set the username and password (use environment variables!)
