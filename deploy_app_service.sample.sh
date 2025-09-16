@@ -1,3 +1,10 @@
+    #!/bin/bash
+
+    # Load environment variables from .env if it exists
+if [ -f .env ]; then
+  source .env
+fi
+
 SUBSCRIPTION="Azure subscription 1"
 RESOURCEGROUP="DefaultResourceGroup-SEA"
 LOCATION="southeastasia"
@@ -31,8 +38,14 @@ az webapp config set -g $RESOURCEGROUP -n $SITENAME --web-sockets-enabled true
 
 # Example: DB URL + build during deploy
 az webapp config appsettings set -g $RESOURCEGROUP -n $SITENAME --settings \
-  DATABASE_URL="<conn>" \
-  CHAINLIT_AUTH_SECRET="<JWT>"  \
+  DATABASE_URL="$DATABASE_URL" \
+  CHAINLIT_AUTH_SECRET="$CHAINLIT_AUTH_SECRET"  \
+  BUCKET_NAME="$BUCKET_NAME" \
+  DEV_AWS_ENDPOINT="$DEV_AWS_ENDPOINT" \
+  APP_AWS_REGION="$APP_AWS_REGION" \
+  APP_AWS_ACCESS_KEY="$APP_AWS_ACCESS_KEY" \
+  APP_AWS_SECRET_KEY="$APP_AWS_SECRET_KEY" \
+  SUPABASE_URL="$SUPABASE_URL" \
   SCM_DO_BUILD_DURING_DEPLOYMENT=true
 
 
